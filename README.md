@@ -12,7 +12,7 @@
   
 
 Method	| Path	| Description	| Role needed
-------------- | ------------------------- | ------------- 
+------------- | ------------------------- | ------------- | ---------
 POST	| /api/v1/visit/book	| Make new reservation	| User         	
 GET	| /api/v1/visit/{id}	| Get details of reservation	| User
 DELETE	| /api/v1/visit/{id}	| Delete reservation	| User
