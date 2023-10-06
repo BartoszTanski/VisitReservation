@@ -6,7 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -27,10 +28,12 @@ public class VisitEntity {
 	initialValue = 100000 )
 	private Long id;
 	private Date startTime;
-	@OneToMany(mappedBy = "visits")
+	@ManyToOne
+	@JoinColumn(name="client_id")
 	private ClientEntity client;
 	private int duration;
-	@OneToMany(mappedBy = "visits")
+	@ManyToOne
+	@JoinColumn(name="employee_id")
 	private EmployeeEntity employee;
 	private boolean available;
 	

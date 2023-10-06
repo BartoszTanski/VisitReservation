@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bartosztanski.visitreservation.model.VisitRequest;
+import com.bartosztanski.visitreservation.model.VisitBookingRequest;
 import com.bartosztanski.visitreservation.model.VisitResponse;
 import com.bartosztanski.visitreservation.service.VisitService;
 
@@ -29,8 +29,8 @@ public class VisitController {
 	}
 	
 	@PostMapping("/book")
-	public ResponseEntity<VisitResponse> bookNewVisit(@RequestBody VisitRequest visitRequest) {
-		VisitResponse response = visitService.bookNewVisit(visitRequest);
+	public ResponseEntity<VisitResponse> bookNewVisit(@RequestBody VisitBookingRequest request) {
+		VisitResponse response = visitService.bookVisit(request);
 		return ResponseEntity.ok(response);
 	}
 }

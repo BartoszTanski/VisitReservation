@@ -1,6 +1,9 @@
 package com.bartosztanski.visitreservation.service;
 
+import java.util.List;
+
 import com.bartosztanski.visitreservation.entity.VisitEntity;
+import com.bartosztanski.visitreservation.model.VisitBookingRequest;
 import com.bartosztanski.visitreservation.model.VisitRequest;
 import com.bartosztanski.visitreservation.model.VisitResponse;
 import com.bartosztanski.visitreservation.repository.VisitRepository;
@@ -21,7 +24,37 @@ public class VisitServiceImpl implements VisitService{
 	}
 
 	@Override
-	public VisitResponse bookNewVisit(VisitRequest visitRequest) {
+	public VisitResponse bookVisit(VisitBookingRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean deleteVisit(Long id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public VisitResponse updateVisit(VisitRequest visitRequest) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<VisitResponse> getVisitsByEmployee(String employeeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<VisitResponse> getVisitsByClient(String clientId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<VisitResponse> addNewVisits(List<VisitRequest> visitRequests) {
 		// TODO Auto-generated method stub
 		return null;
 	}
