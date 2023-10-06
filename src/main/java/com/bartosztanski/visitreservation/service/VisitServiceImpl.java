@@ -2,12 +2,15 @@ package com.bartosztanski.visitreservation.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.bartosztanski.visitreservation.entity.VisitEntity;
 import com.bartosztanski.visitreservation.model.VisitBookingRequest;
 import com.bartosztanski.visitreservation.model.VisitRequest;
 import com.bartosztanski.visitreservation.model.VisitResponse;
 import com.bartosztanski.visitreservation.repository.VisitRepository;
 
+@Service
 public class VisitServiceImpl implements VisitService{
 	
 	private final VisitRepository visitRepository;
