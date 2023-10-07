@@ -61,6 +61,6 @@ public class ClientController {
 		if(_phoneNumber==null) throw new EntityNotFoundException();
 		Client _client = clientService.getClientByPhoneNr(_phoneNumber);
 		if(_client == null) throw new EntityNotFoundException();
-		return new ResponseEntity<>(_client,HttpStatus.FOUND); 
+		return new ResponseEntity<>(_client,HttpStatus.FOUND);
 	}
 }

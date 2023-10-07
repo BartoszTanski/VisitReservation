@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bartosztanski.visitreservation.model.VisitBookingRequest;
-import com.bartosztanski.visitreservation.model.VisitResponse;
+import com.bartosztanski.visitreservation.model.Visit;
 import com.bartosztanski.visitreservation.service.VisitService;
 
 @RestController
@@ -23,14 +23,14 @@ public class VisitController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<VisitResponse> getVisitById(@PathVariable("id") Long id) {
-		VisitResponse response = visitService.getVisitById(id);
+	public ResponseEntity<Visit> getVisitById(@PathVariable("id") Long id) {
+		Visit response = visitService.getVisitById(id);
 		return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping("/book")
-	public ResponseEntity<VisitResponse> bookNewVisit(@RequestBody VisitBookingRequest request) {
-		VisitResponse response = visitService.bookVisit(request);
+	public ResponseEntity<Visit> bookNewVisit(@RequestBody VisitBookingRequest request) {
+		Visit response = visitService.bookVisit(request);
 		return ResponseEntity.ok(response);
 	}
 }

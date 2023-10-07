@@ -2,6 +2,7 @@ package com.bartosztanski.visitreservation.model;
 
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,5 +14,5 @@ public class Person {
 	protected String firstName;
 	protected String lastName;
 	protected Long phoneNumber;
-	protected String emailAdress;
+	protected String emailAddress;
 }
