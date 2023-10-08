@@ -2,7 +2,6 @@ package com.bartosztanski.visitreservation.model;
 
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

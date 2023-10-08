@@ -2,8 +2,6 @@ package com.bartosztanski.visitreservation.model;
 
 import java.util.Date;
 
-import com.bartosztanski.visitreservation.entity.ClientEntity;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,8 +19,7 @@ public class Visit {
 	private Date startTime;
 	private Client client;
 	private int duration;
-	private String employeeFirstName;
-	private String employeeLastName;
+	private Employee employee;
 	private boolean available;
 	
 }

@@ -1,6 +1,7 @@
 package com.bartosztanski.visitreservation.entity;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.bartosztanski.visitreservation.model.Person;
 
@@ -27,13 +28,13 @@ public class EmployeeEntity extends Person {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	private String id;
+	private UUID id;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "employee")
 	private List<VisitEntity> visits;
 	
 	
 	@Builder
-    public EmployeeEntity(String id, String firstName, String lastName, Long phoneNumber, String emailAddress, List<VisitEntity> visits) {
+    public EmployeeEntity(UUID id, String firstName, String lastName, Long phoneNumber, String emailAddress, List<VisitEntity> visits) {
         super(firstName, lastName, phoneNumber, emailAddress);
         this.id = id;
         this.visits = visits;
