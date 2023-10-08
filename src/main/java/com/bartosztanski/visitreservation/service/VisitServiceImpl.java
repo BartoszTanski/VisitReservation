@@ -2,12 +2,15 @@ package com.bartosztanski.visitreservation.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.bartosztanski.visitreservation.entity.VisitEntity;
 import com.bartosztanski.visitreservation.model.VisitBookingRequest;
-import com.bartosztanski.visitreservation.model.VisitRequest;
 import com.bartosztanski.visitreservation.model.Visit;
 import com.bartosztanski.visitreservation.repository.VisitRepository;
+import com.bartosztanski.visitreservation.utils.ObjectMapperUtils;
 
+@Component
 public class VisitServiceImpl implements VisitService{
 	
 	private final VisitRepository visitRepository;
@@ -17,10 +20,18 @@ public class VisitServiceImpl implements VisitService{
 	}
 	
 	@Override
+	public Visit addVisit(Visit visit) {
+		VisitEntity visitEntity = ObjectMapperUtils.map(visit, VisitEntity.class);
+		Long id = visitRepository.save(visitEntity).getId();
+		visit.setId(id);
+		return visit;
+	}
+
+	@Override
 	public Visit getVisitById(Long id) {
-		VisitEntity visit = visitRepository.findById(id).get();
-		Visit response = null; //todo 
-		return response;
+		VisitEntity visitEntity = visitRepository.findById(id).get();
+		Visit visit = ObjectMapperUtils.map(visitEntity, Visit.class);
+		return visit;
 	}
 
 	@Override
@@ -36,7 +47,7 @@ public class VisitServiceImpl implements VisitService{
 	}
 
 	@Override
-	public Visit updateVisit(VisitRequest visitRequest) {
+	public Visit updateVisit(Visit visit) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -54,7 +65,7 @@ public class VisitServiceImpl implements VisitService{
 	}
 
 	@Override
-	public List<Visit> addNewVisits(List<VisitRequest> visitRequests) {
+	public List<Visit> addNewVisits(List<Visit> visit) {
 		// TODO Auto-generated method stub
 		return null;
 	}
