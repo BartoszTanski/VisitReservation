@@ -2,6 +2,8 @@ package com.bartosztanski.visitreservation.controller;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +23,9 @@ import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("api/v1/client/")
-public class ClientController {
+public class ClientController { 
+	
+	private final Logger LOGGER = LoggerFactory.getLogger(ClientController.class);
 
 	private final ClientService clientService; 
 
@@ -31,6 +35,7 @@ public class ClientController {
 	
 	@PostMapping("/add")
 	public ResponseEntity<Client> addClient(@RequestBody Client client) {
+		LOGGER.info("Inside ClientController.addClient");
 		Client _client = clientService.addClient(client);
 		return new ResponseEntity<>(_client,HttpStatus.CREATED);
 	}

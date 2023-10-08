@@ -2,6 +2,8 @@ package com.bartosztanski.visitreservation.service;
 
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.bartosztanski.visitreservation.entity.ClientEntity;
@@ -12,6 +14,7 @@ import com.bartosztanski.visitreservation.utils.ObjectMapperUtils;
 @Component
 public class ClientServiceImpl implements ClientService {
 	
+	private final Logger LOGGER = LoggerFactory.getLogger(ClientServiceImpl.class);
 	private final ClientRepository clientRepository;
 	
 	public ClientServiceImpl(ClientRepository clientRepository) {
@@ -21,6 +24,7 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public Client addClient(Client client) {
 		ClientEntity clientEntity = ObjectMapperUtils.map(client, ClientEntity.class);
+	
 		UUID id = clientRepository.save(clientEntity).getId();
 		client.setId(id);
 		return client;

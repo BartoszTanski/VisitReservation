@@ -29,7 +29,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Override
 	public Employee getEmployeeById(String employeeId) {
 		Employee employee = null;
-		EmployeeEntity employeeEntity = employeeRepository.findById(employeeId).orElseThrow();
+		UUID id = UUID.fromString(employeeId);
+		EmployeeEntity employeeEntity = employeeRepository.findById(id).orElseThrow();
 		employee = ObjectMapperUtils.map(employeeEntity, Employee.class);
 		return employee;
 	}
