@@ -42,8 +42,8 @@ public class VisitController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<String> deleteVisit(@RequestBody Client client, Long visitId) throws NoSuchElementException, ClientDetailsNotMatchesException {
+	public ResponseEntity<Void> deleteVisit(@RequestBody Client client, Long visitId) throws NoSuchElementException, ClientDetailsNotMatchesException {
 		visitService.delete(client, visitId);
-		return new ResponseEntity<String>("",HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

@@ -40,9 +40,9 @@ public class ClientController {
 		return new ResponseEntity<>(_client,HttpStatus.CREATED);
 	}
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleteClient(@PathVariable("id") String clientId) {
+	public ResponseEntity<Void> deleteClient(@PathVariable("id") String clientId) {
 		clientService.deleteById(clientId);
-		return new ResponseEntity<String>("",HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	@PutMapping("/{id}")
 	public ResponseEntity<Client> updateClient(@RequestBody Client client) {
