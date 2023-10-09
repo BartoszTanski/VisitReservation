@@ -19,7 +19,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 	
 	@Override
-	public Employee addEmployee(Employee employee) {
+	public Employee add(Employee employee) {
 		EmployeeEntity employeeEntity = ObjectMapperUtils.map(employee, EmployeeEntity.class);
 		UUID id = employeeRepository.save(employeeEntity).getId();
 		employee.setId(id);
@@ -27,7 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 	
 	@Override
-	public Employee getEmployeeById(String employeeId) {
+	public Employee getById(String employeeId) {
 		Employee employee = null;
 		UUID id = UUID.fromString(employeeId);
 		EmployeeEntity employeeEntity = employeeRepository.findById(id).orElseThrow();
@@ -36,19 +36,19 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	public void deleteEmployee(String employeeId) {
+	public void delete(String employeeId) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Employee updateEmployee(Employee employee) {
+	public Employee update(Employee employee) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Employee getEmployeeByName(String fName, String lName) {
+	public Employee getByName(String fName, String lName) {
 		// TODO Auto-generated method stub
 		return null;
 	}

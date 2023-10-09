@@ -1,6 +1,10 @@
 package com.bartosztanski.visitreservation.controller;
 
+import java.util.NoSuchElementException;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bartosztanski.visitreservation.model.VisitBookingRequest;
+import com.bartosztanski.visitreservation.error.ClientDetailsNotMatchesException;
+import com.bartosztanski.visitreservation.error.VisitNotAvailableException;
+import com.bartosztanski.visitreservation.model.Client;
 import com.bartosztanski.visitreservation.model.Visit;
 import com.bartosztanski.visitreservation.service.VisitService;
 
@@ -24,13 +31,19 @@ public class VisitController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Visit> getVisitById(@PathVariable("id") Long id) {
-		Visit response = visitService.getVisitById(id);
+		Visit response = visitService.getById(id);
 		return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping("/book")
-	public ResponseEntity<Visit> bookNewVisit(@RequestBody VisitBookingRequest request) {
-		Visit response = visitService.bookVisit(request);
+	public ResponseEntity<Visit> bookNewVisit(@RequestBody VisitBookingRequest request) throws NoSuchElementException, VisitNotAvailableException {
+		Visit response = visitService.book(request);
 		return ResponseEntity.ok(response);
+	}
+	
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<String> deleteVisit(@RequestBody Client client, Long visitId) throws NoSuchElementException, ClientDetailsNotMatchesException {
+		visitService.delete(client, visitId);
+		return new ResponseEntity<String>("",HttpStatus.NO_CONTENT);
 	}
 }

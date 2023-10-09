@@ -1,29 +1,33 @@
 package com.bartosztanski.visitreservation.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
 import com.bartosztanski.visitreservation.model.VisitBookingRequest;
+import com.bartosztanski.visitreservation.error.ClientDetailsNotMatchesException;
+import com.bartosztanski.visitreservation.error.VisitNotAvailableException;
+import com.bartosztanski.visitreservation.model.Client;
 import com.bartosztanski.visitreservation.model.Visit;
 
 @Service
 public interface VisitService {
 	
-	Visit addVisit(Visit visit);
+	Visit add(Visit visit);
 
-	Visit getVisitById(Long id);
+	Visit getById(Long id);
 
-	Visit bookVisit(VisitBookingRequest request);
+	Visit book(VisitBookingRequest request) throws VisitNotAvailableException, NoSuchElementException;
 	
-	boolean deleteVisit(Long id);
+	void delete(Client client, Long id) throws ClientDetailsNotMatchesException, NoSuchElementException;
 	
-	Visit updateVisit(Visit visit);
+	Visit update(Visit visit);
 	
-	List<Visit> getVisitsByEmployee(String employeeId);
+	List<Visit> getByEmployee(String employeeId);
 	
-	List<Visit> getVisitsByClient(String clientId);
+	List<Visit> getByClient(String clientId);
 	
-	List<Visit> addNewVisits(List<Visit> visit);
+	List<Visit> addAll(List<Visit> visit);
 
 }

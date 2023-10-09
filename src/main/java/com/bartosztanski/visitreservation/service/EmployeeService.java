@@ -7,9 +7,9 @@ import com.bartosztanski.visitreservation.model.Employee;
 @Service
 public interface EmployeeService {
 	
-	public Employee addEmployee(Employee employee);
-	public void deleteEmployee(String employeeId);
-	public Employee updateEmployee(Employee employee);
-	public Employee getEmployeeById(String employeeId);
-	public Employee getEmployeeByName(String fName, String lName);
+	public Employee add(Employee employee);
+	public void delete(String employeeId);
+	public Employee update(Employee employee);
+	public Employee getById(String employeeId);
+	public Employee getByName(String fName, String lName);
 }

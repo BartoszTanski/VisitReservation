@@ -36,17 +36,17 @@ public class ClientController {
 	@PostMapping("/add")
 	public ResponseEntity<Client> addClient(@RequestBody Client client) {
 		LOGGER.info("Inside ClientController.addClient");
-		Client _client = clientService.addClient(client);
+		Client _client = clientService.add(client);
 		return new ResponseEntity<>(_client,HttpStatus.CREATED);
 	}
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteClient(@PathVariable("id") String clientId) {
-		clientService.deleteClientById(clientId);
+		clientService.deleteById(clientId);
 		return new ResponseEntity<String>("",HttpStatus.NO_CONTENT);
 	}
 	@PutMapping("/{id}")
 	public ResponseEntity<Client> updateClient(@RequestBody Client client) {
-		Client _client = clientService.updateClient(client);
+		Client _client = clientService.update(client);
 		return new ResponseEntity<>(_client,HttpStatus.ACCEPTED);
 	}
 	@GetMapping("/search/name")
@@ -55,7 +55,7 @@ public class ClientController {
 		String firstName = fName.orElse(null);
 		String lastName = lName.orElse(null);
 		if(lastName==firstName&&firstName==null) throw new EntityNotFoundException();
-		Client _client = clientService.getClientByName(firstName,lastName);
+		Client _client = clientService.getByName(firstName,lastName);
 		if(_client == null) throw new EntityNotFoundException();
 		return new ResponseEntity<>(_client,HttpStatus.FOUND); 
 	}
@@ -64,7 +64,7 @@ public class ClientController {
 	public ResponseEntity<Client> getClientByPhoneNr(@RequestParam("phoneNumber") Optional<Long> phoneNumber) {
 		Long _phoneNumber = phoneNumber.orElse(null);
 		if(_phoneNumber==null) throw new EntityNotFoundException();
-		Client _client = clientService.getClientByPhoneNr(_phoneNumber);
+		Client _client = clientService.getByPhoneNr(_phoneNumber);
 		if(_client == null) throw new EntityNotFoundException();
 		return new ResponseEntity<>(_client,HttpStatus.FOUND);
 	}

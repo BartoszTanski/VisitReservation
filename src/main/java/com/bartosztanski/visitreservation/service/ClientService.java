@@ -6,10 +6,10 @@ import com.bartosztanski.visitreservation.model.Client;
 
 @Service
 public interface ClientService {
-	Client addClient(Client client);
-	void deleteClientById(String clientId);
-	Client updateClient(Client client);
-	Client getClientByName(String fName, String lName);
-	Client getClientByPhoneNr(Long phoneNumber);
-	Client getClientByEmail(String email);
+	Client add(Client client);
+	void deleteById(String clientId);
+	Client update(Client client);
+	Client getByName(String fName, String lName);
+	Client getByPhoneNr(Long phoneNumber);
+	Client getByEmail(String email);
 }

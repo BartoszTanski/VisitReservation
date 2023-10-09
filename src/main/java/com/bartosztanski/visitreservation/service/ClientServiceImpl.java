@@ -1,5 +1,6 @@
 package com.bartosztanski.visitreservation.service;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public Client addClient(Client client) {
+	public Client add(Client client) {
 		ClientEntity clientEntity = ObjectMapperUtils.map(client, ClientEntity.class);
 	
 		UUID id = clientRepository.save(clientEntity).getId();
@@ -31,31 +32,34 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void deleteClientById(String clientId) {
-		
-		
+	public void deleteById(String clientId) {
+		UUID id = UUID.fromString(clientId);
+		if (!clientRepository.existsById(id)) throw new NoSuchElementException();
+		clientRepository.deleteById(id);
 	}
 
 	@Override
-	public Client updateClient(Client client) {
+	public Client update(Client client) throws NoSuchElementException {
+		ClientEntity clientEntity = clientRepository.findById(client.getId()).orElseThrow();
+		clientEntity = ObjectMapperUtils.map(client, ClientEntity.class);
+		clientRepository.save(clientEntity);
+		return client;
+	}
+
+	@Override
+	public Client getByName(String fName, String lName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Client getClientByName(String fName, String lName) {
+	public Client getByPhoneNr(Long phoneNumber) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Client getClientByPhoneNr(Long phoneNumber) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Client getClientByEmail(String email) {
+	public Client getByEmail(String email) {
 		// TODO Auto-generated method stub
 		return null;
 	}
