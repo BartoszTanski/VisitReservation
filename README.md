@@ -1,4 +1,4 @@
-# Visit Reservation Application
+# Visit Reservation Application (In progress)
 
 ### It is a spring boot app that provides REST API. Application is connected to Postgres database.
 
