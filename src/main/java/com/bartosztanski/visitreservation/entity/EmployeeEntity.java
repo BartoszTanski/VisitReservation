@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.bartosztanski.visitreservation.model.Person;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -29,7 +30,7 @@ public class EmployeeEntity extends Person {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "employee")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "employee", cascade = CascadeType.ALL)
 	private List<VisitEntity> visits;
 	
 	
