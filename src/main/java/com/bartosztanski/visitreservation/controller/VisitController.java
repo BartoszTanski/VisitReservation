@@ -37,10 +37,9 @@ public class VisitController {
 	
 	@PostMapping("/book")
 	public ResponseEntity<Visit> bookNewVisit(@RequestBody VisitBookingRequest request) throws NoSuchElementException, VisitNotAvailableException {
-		Visit response = visitService.book(request);
-		return ResponseEntity.ok(response);
+		Visit visit = visitService.book(request);
+		return new ResponseEntity<>(visit, HttpStatus.OK);
 	}
-	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Void> deleteVisit(@RequestBody Client client, Long visitId) throws NoSuchElementException, ClientDetailsNotMatchesException {
 		visitService.delete(client, visitId);

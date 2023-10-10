@@ -33,6 +33,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	public ResponseEntity<ErrorMessage> noSuchElementException(NoSuchElementException noSuchElementException, 
 																					WebRequest webRequest) {
 		ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND,noSuchElementException.getMessage());
+		if (message.getMessage()==null) message.setMessage("Element with given id does not exist");
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
 	}
 		

@@ -3,6 +3,7 @@ package com.bartosztanski.visitreservation.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Supplier;
 
 import org.springframework.stereotype.Component;
 
