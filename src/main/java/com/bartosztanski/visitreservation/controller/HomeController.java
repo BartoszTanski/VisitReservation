@@ -17,6 +17,7 @@ public class HomeController {
 	
 	@GetMapping("/status")
 	public ResponseEntity<String> status() {
+		
 		LOGGER.info("Inside Homecontroller.status");
 		String s = "Status: UP";
 		return new ResponseEntity<>(s, HttpStatus.OK);
@@ -24,9 +25,10 @@ public class HomeController {
 	
 	@GetMapping("/home")
 	public ModelAndView home() {
+		
 		LOGGER.info("Inside HomeController.home");
-	        ModelAndView modelAndView = new ModelAndView();
-	        modelAndView.setViewName("test.html");
-	        return modelAndView;
+	    ModelAndView modelAndView = new ModelAndView();
+	    modelAndView.setViewName("test.html");
+	    return modelAndView;
 	}
 }

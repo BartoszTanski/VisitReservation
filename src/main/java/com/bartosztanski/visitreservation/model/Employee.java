@@ -20,6 +20,7 @@ public class Employee extends Person {
 	
 	@Builder
     public Employee(UUID id, String firstName, String lastName, Long phoneNumber, String emailAddress, List<Visit> visits) {
+		
         super(firstName, lastName, phoneNumber, emailAddress);
         this.id = id;
         this.visits = visits;

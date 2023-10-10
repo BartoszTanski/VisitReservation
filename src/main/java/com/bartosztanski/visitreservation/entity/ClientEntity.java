@@ -26,6 +26,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Table(name="clients")
 public class ClientEntity extends Person {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
@@ -33,7 +34,9 @@ public class ClientEntity extends Person {
 	private List<VisitEntity> visits;
 	
 	@Builder
-    public ClientEntity(UUID id, String firstName, String lastName, Long phoneNumber, String emailAddress, List<VisitEntity> visits) {
+    public ClientEntity(UUID id, String firstName, String lastName,
+    		Long phoneNumber, String emailAddress, List<VisitEntity> visits) {
+		
         super(firstName, lastName, phoneNumber, emailAddress);
         this.id = id;
         this.visits = visits;

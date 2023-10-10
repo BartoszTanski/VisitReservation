@@ -35,37 +35,46 @@ public class ClientController {
 	
 	@PostMapping("/add")
 	public ResponseEntity<Client> addClient(@RequestBody Client client) {
+		
 		LOGGER.info("Inside ClientController.addClient");
 		Client _client = clientService.add(client);
 		return new ResponseEntity<>(_client,HttpStatus.CREATED);
 	}
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteClient(@PathVariable("id") String clientId) {
+		
 		clientService.deleteById(clientId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
 	@PutMapping("/{id}")
 	public ResponseEntity<Client> updateClient(@RequestBody Client client) {
+		
 		Client _client = clientService.update(client);
 		return new ResponseEntity<>(_client,HttpStatus.ACCEPTED);
 	}
 	@GetMapping("/search/name")
-	public ResponseEntity<Client> getClientByName(@RequestParam("firstName") Optional<String> fName,
+	public ResponseEntity<Client> getClientByName(
+			@RequestParam("firstName") Optional<String> fName,
 			@RequestParam("lastName") Optional<String> lName) {
+		
 		String firstName = fName.orElse(null);
 		String lastName = lName.orElse(null);
 		if(lastName==firstName&&firstName==null) throw new EntityNotFoundException();
-		Client _client = clientService.getByName(firstName,lastName);
+		Client _client = clientService.getByName(firstName, lastName);
 		if(_client == null) throw new EntityNotFoundException();
-		return new ResponseEntity<>(_client,HttpStatus.FOUND); 
+		return new ResponseEntity<>(_client, HttpStatus.FOUND); 
 	}
 	
 	@GetMapping("/search/phone")
-	public ResponseEntity<Client> getClientByPhoneNr(@RequestParam("phoneNumber") Optional<Long> phoneNumber) {
-		Long _phoneNumber = phoneNumber.orElse(null);
-		if(_phoneNumber==null) throw new EntityNotFoundException();
+	public ResponseEntity<Client> getClientByPhoneNr(
+			@RequestParam("phoneNumber") Optional<Long> phoneNumber) {
+		
+		Long _phoneNumber = phoneNumber.orElse(null); 
+		if (_phoneNumber == null) throw new EntityNotFoundException();
 		Client _client = clientService.getByPhoneNr(_phoneNumber);
-		if(_client == null) throw new EntityNotFoundException();
+		if (_client == null) throw new EntityNotFoundException();
 		return new ResponseEntity<>(_client,HttpStatus.FOUND);
 	}
 }

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @MappedSuperclass
 public class Person {
+	
 	protected String firstName;
 	protected String lastName;
 	protected Long phoneNumber;

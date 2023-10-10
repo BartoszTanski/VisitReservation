@@ -35,7 +35,9 @@ public class EmployeeEntity extends Person {
 	
 	
 	@Builder
-    public EmployeeEntity(UUID id, String firstName, String lastName, Long phoneNumber, String emailAddress, List<VisitEntity> visits) {
+    public EmployeeEntity(UUID id, String firstName, String lastName,
+    		Long phoneNumber, String emailAddress, List<VisitEntity> visits) {
+		
         super(firstName, lastName, phoneNumber, emailAddress);
         this.id = id;
         this.visits = visits;

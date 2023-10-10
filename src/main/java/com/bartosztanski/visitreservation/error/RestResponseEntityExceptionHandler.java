@@ -18,20 +18,25 @@ import com.bartosztanski.visitreservation.model.ErrorMessage;
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(VisitNotAvailableException.class)
-	public ResponseEntity<ErrorMessage> visitNotAvailableException(VisitNotAvailableException visitNotAvailableException, 
-																					WebRequest webRequest) {
+	public ResponseEntity<ErrorMessage> visitNotAvailableException(
+			VisitNotAvailableException visitNotAvailableException, 	WebRequest webRequest) {
+		
 		ErrorMessage message = new ErrorMessage(HttpStatus.CONFLICT,visitNotAvailableException.getMessage());
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
 	}
+	
 	@ExceptionHandler(ClientDetailsNotMatchesException.class)
-	public ResponseEntity<ErrorMessage> clientDetailsNotMatchesException(ClientDetailsNotMatchesException clientDetailsNotMatchesException, 
-																					WebRequest webRequest) {
+	public ResponseEntity<ErrorMessage> clientDetailsNotMatchesException(
+			ClientDetailsNotMatchesException clientDetailsNotMatchesException, WebRequest webRequest) {
+		
 		ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND,clientDetailsNotMatchesException.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-		}
+	}
+	
 	@ExceptionHandler(NoSuchElementException.class)
-	public ResponseEntity<ErrorMessage> noSuchElementException(NoSuchElementException noSuchElementException, 
-																					WebRequest webRequest) {
+	public ResponseEntity<ErrorMessage> noSuchElementException(
+			NoSuchElementException noSuchElementException, WebRequest webRequest) {
+		
 		ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND,noSuchElementException.getMessage());
 		if (message.getMessage()==null) message.setMessage("Element with given id does not exist");
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);

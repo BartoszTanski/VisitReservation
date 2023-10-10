@@ -20,6 +20,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	
 	@Override
 	public Employee add(Employee employee) {
+		
 		EmployeeEntity employeeEntity = ObjectMapperUtils.map(employee, EmployeeEntity.class);
 		UUID id = employeeRepository.save(employeeEntity).getId();
 		employee.setId(id);
@@ -28,6 +29,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	
 	@Override
 	public Employee getById(String employeeId) {
+		
 		Employee employee = null;
 		UUID id = UUID.fromString(employeeId);
 		EmployeeEntity employeeEntity = employeeRepository.findById(id).orElseThrow();

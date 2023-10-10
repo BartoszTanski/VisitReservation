@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name="visits")
 public class VisitEntity {
+	
 	@Id
 	@GeneratedValue
 	(strategy = GenerationType.SEQUENCE,generator = "visit_generator")

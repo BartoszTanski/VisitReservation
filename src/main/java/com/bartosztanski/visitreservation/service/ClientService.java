@@ -6,6 +6,7 @@ import com.bartosztanski.visitreservation.model.Client;
 
 @Service
 public interface ClientService {
+	
 	Client add(Client client);
 	void deleteById(String clientId);
 	Client update(Client client);

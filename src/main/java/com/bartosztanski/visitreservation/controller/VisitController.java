@@ -31,17 +31,23 @@ public class VisitController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Visit> getVisitById(@PathVariable("id") Long id) {
+		
 		Visit response = visitService.getById(id);
 		return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping("/book")
-	public ResponseEntity<Visit> bookNewVisit(@RequestBody VisitBookingRequest request) throws NoSuchElementException, VisitNotAvailableException {
+	public ResponseEntity<Visit> bookNewVisit(
+			@RequestBody VisitBookingRequest request)
+					throws NoSuchElementException, VisitNotAvailableException {
+		
 		Visit visit = visitService.book(request);
 		return new ResponseEntity<>(visit, HttpStatus.OK);
 	}
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Void> deleteVisit(@RequestBody Client client, Long visitId) throws NoSuchElementException, ClientDetailsNotMatchesException {
+	public ResponseEntity<Void> deleteVisit(@RequestBody Client client, Long visitId)
+			throws NoSuchElementException, ClientDetailsNotMatchesException {
+		
 		visitService.delete(client, visitId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
