@@ -32,6 +32,7 @@ public class ObjectMapperUtilsTest {
 	
 	static Calendar calendar = Calendar.getInstance();
 	static Date date = calendar.getTime();
+	
 	@BeforeAll
 	static void init() {
 		

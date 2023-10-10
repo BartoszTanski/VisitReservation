@@ -1,4 +1,4 @@
-package com.bartosztanski.VisitController;
+package com.bartosztanski.controllerTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -70,35 +70,52 @@ public class VisitControllerTest {
                 .thenReturn(new Visit(Long.valueOf(123),date,new Client(),15,new Employee(),true));
 
         // when
-        MockHttpServletResponse response = this.mockMvc.perform(get("/api/v1/visit/123")
+        MockHttpServletResponse response = this.mockMvc
+        		.perform(get("/api/v1/visit/123")
                         .accept(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
+                .andReturn()
+                .getResponse();
 
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).isEqualTo(
-                jsonVisit.write(new Visit(Long.valueOf(123),date,new Client(),15,new Employee(),true)).getJson()
-        );
+        assertThat(response
+        			.getContentAsString())
+        			.isEqualTo(
+        					jsonVisit.write(
+        						new Visit(
+        								Long.valueOf(123),
+        								date,
+        								new Client(),
+        								15,
+        								new Employee(),
+        								true))
+        					.getJson());
+        
     }
 	
 	@Test
 	@DisplayName("Can retrive by id when NOT exists")
     public void canRetrieveByIdWhenDoesNotExist() throws Exception {
+		
         // given
         when(visitService.getById(Long.valueOf(124)))
                 .thenThrow(new NoSuchElementException());
 
         // when
-        MockHttpServletResponse response = mockMvc.perform(
-                get("/api/v1/visit/124")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
+        MockHttpServletResponse response = mockMvc
+        		.perform(get("/api/v1/visit/124")
+	                .accept(MediaType.APPLICATION_JSON))
+                .andReturn()
+                .getResponse();
 
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
-        assertThat(response.getContentAsString())
-        		.isEqualTo(jsonErrorMessage.write(new ErrorMessage
-        				(HttpStatus.NOT_FOUND,"Element with given id does not exist"))
+        assertThat(response
+        		.getContentAsString())
+        		.isEqualTo(jsonErrorMessage
+        				.write(new ErrorMessage(
+        						HttpStatus.NOT_FOUND,
+        						"Element with given id does not exist"))
         				.getJson());
     }
 	
@@ -107,7 +124,8 @@ public class VisitControllerTest {
     public void canBookAVisitByIdWhenExists() throws Exception {
 		
 		//given
-		Client client = Client.builder()
+		Client client = Client
+				.builder()
 				.id(UUID.fromString("77f4ea4a-e602-4cb7-a64d-2aed23014be5"))
 				.firstName("Jan")
 				.lastName("Kowalski")
@@ -122,17 +140,60 @@ public class VisitControllerTest {
 		VisitBookingRequest bookRequest = new VisitBookingRequest(visitId, client);
 		when(visitService.book(any(VisitBookingRequest.class))).thenReturn(visit);
 		
-        // when
-        MockHttpServletResponse response = mockMvc.perform(
-                post("/api/v1/visit/book/").contentType(MediaType.APPLICATION_JSON).content(
-                        jsonBookRequest.write(bookRequest)
-                        .getJson()
-                )).andReturn().getResponse();
+		// when
+        MockHttpServletResponse response = mockMvc
+        		.perform(post("/api/v1/visit/book/")
+		                .contentType(MediaType.APPLICATION_JSON)
+		                .content(jsonBookRequest.write(bookRequest).getJson()))
+        		.andReturn()
+        		.getResponse();
+
 
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString())
-		.isEqualTo(jsonVisit.write(visit)
-				.getJson());
+        		.isEqualTo(jsonVisit.write(visit).getJson());
+    }
+	
+	@Test
+	@DisplayName("Can NOT book a visit by id when NOT exists")
+    public void canNotBookAVisitByIdWhenNotExists() throws Exception {
+		
+		//given
+		Client client = Client
+				.builder()
+				.id(UUID.fromString("77f4ea4a-e602-4cb7-a64d-2aed23014be5"))
+				.firstName("Jan")
+				.lastName("Kowalski")
+				.phoneNumber(Long.valueOf(234567890))
+				.emailAddress("jan.kowalski@gmail.com")
+				.visits(null)
+				.build();
+		
+		Long visitId = Long.valueOf(124);
+		Visit visit = new Visit(visitId,new Date(),client,15,new Employee(),false);
+		
+		VisitBookingRequest bookRequest = new VisitBookingRequest(visitId, client);
+		when(visitService.book(any(VisitBookingRequest.class))).thenThrow(new NoSuchElementException());
+		
+		
+        // when
+        MockHttpServletResponse response = mockMvc
+        		.perform(post("/api/v1/visit/book/")
+		            .contentType(MediaType.APPLICATION_JSON)
+		            .content(jsonBookRequest.write(bookRequest).getJson()))
+        		.andReturn()
+        		.getResponse();
+
+        // then
+        
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+        assertThat(response
+        		.getContentAsString())
+        		.isEqualTo(jsonErrorMessage
+        				.write(new ErrorMessage(
+        						HttpStatus.NOT_FOUND,
+        						"Element with given id does not exist"))
+        				.getJson());
     }
 }
