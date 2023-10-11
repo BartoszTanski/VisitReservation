@@ -13,4 +13,5 @@ public interface ClientService {
 	Client getByName(String fName, String lName);
 	Client getByPhoneNr(Long phoneNumber);
 	Client getByEmail(String email);
+	Client getById(String clientId);
 }

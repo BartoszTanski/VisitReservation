@@ -3,6 +3,7 @@ package com.bartosztanski.visitreservation.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import com.bartosztanski.visitreservation.error.ClientDetailsNotMatchesException
 import com.bartosztanski.visitreservation.error.VisitNotAvailableException;
 import com.bartosztanski.visitreservation.model.VisitBookingRequest;
 import com.bartosztanski.visitreservation.model.Client;
+import com.bartosztanski.visitreservation.model.Employee;
 import com.bartosztanski.visitreservation.model.Visit;
 import com.bartosztanski.visitreservation.repository.VisitRepository;
 import com.bartosztanski.visitreservation.utils.ObjectMapperUtils;
@@ -86,24 +88,29 @@ public class VisitServiceImpl implements VisitService{
 
 	@Override
 	public Visit update(Visit visit) {
-		// TODO Auto-generated method stub
-		return null;
+		if (!visitRepository.existsById(visit.getId())) throw new NoSuchElementException();
+		VisitEntity visitEntity = ObjectMapperUtils.map(visit, VisitEntity.class);
+		visitEntity = visitRepository.save(visitEntity);
+		visit = ObjectMapperUtils.map(visitEntity, Visit.class);
+		return visit;
 	}
 
 	@Override
 	public List<Visit> getByEmployee(String employeeId) throws NoSuchElementException {
 		List<Visit> visits = new ArrayList<>();
-		EmployeeEntity employeeEntity = ObjectMapperUtils
-				.map(employeeService.getById(employeeId),EmployeeEntity.class);
-		
-		visits = ObjectMapperUtils.mapAll(visitRepository.findByEmployee(employeeEntity),Visit.class);
+		UUID id = UUID.fromString(employeeId);
+		List<VisitEntity> visitEntities = visitRepository.findAllByEmployeeId(id);
+		visits = ObjectMapperUtils.mapAll(visitEntities,Visit.class);
 		return visits;
 	}
 
 	@Override
 	public List<Visit> getByClient(String clientId) {
-		// TODO Auto-generated method stub
-		return null;
+		UUID id = UUID.fromString(clientId); //TO DO custom exception for UUID.fromString()
+		List<Visit> visits = new ArrayList<>();
+		List<VisitEntity> visitEntities = visitRepository.findAllByClientId(id);
+		visits = ObjectMapperUtils.mapAll(visitEntities,Visit.class);
+		return visits;
 	}
 
 	@Override

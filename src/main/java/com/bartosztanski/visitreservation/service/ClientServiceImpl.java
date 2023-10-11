@@ -30,6 +30,14 @@ public class ClientServiceImpl implements ClientService {
 		client.setId(id);
 		return client;
 	}
+	
+	@Override
+	public Client getById(String clientId) {
+		UUID id = UUID.fromString(clientId);
+		ClientEntity clientEntity = clientRepository.findById(id).orElseThrow();
+		Client client = ObjectMapperUtils.map(clientEntity, Client.class);
+		return client;
+	}
 
 	@Override
 	public void deleteById(String clientId) {
@@ -40,28 +48,44 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public Client update(Client client) throws NoSuchElementException {
-		ClientEntity clientEntity = clientRepository.findById(client.getId()).orElseThrow();
+		ClientEntity clientEntity = clientRepository
+				.findById(client.getId())
+				.orElseThrow();
+		
 		clientEntity = ObjectMapperUtils.map(client, ClientEntity.class);
 		clientRepository.save(clientEntity);
+		client = ObjectMapperUtils.map(clientEntity, Client.class);
 		return client;
 	}
 
 	@Override
 	public Client getByName(String fName, String lName) {
-		// TODO Auto-generated method stub
-		return null;
+		ClientEntity clientEntity = clientRepository
+				.findByFirstNameLastName(fName, lName)
+				.orElseThrow();
+		
+		Client client = ObjectMapperUtils.map(clientEntity, Client.class);
+		return client;
 	}
 
 	@Override
 	public Client getByPhoneNr(Long phoneNumber) {
-		// TODO Auto-generated method stub
-		return null;
+		ClientEntity clientEntity = clientRepository
+				.findByPhoneNumber(phoneNumber)
+				.orElseThrow();
+		
+		Client client = ObjectMapperUtils.map(clientEntity, Client.class);
+		return client;
 	}
 
 	@Override
 	public Client getByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+		ClientEntity clientEntity = clientRepository
+				.findByEmailAddress(email)
+				.orElseThrow();
+		
+		Client client = ObjectMapperUtils.map(clientEntity, Client.class);
+		return client;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.bartosztanski.visitreservation.service;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -22,8 +23,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public Employee add(Employee employee) {
 		
 		EmployeeEntity employeeEntity = ObjectMapperUtils.map(employee, EmployeeEntity.class);
-		UUID id = employeeRepository.save(employeeEntity).getId();
-		employee.setId(id);
+		employeeEntity = employeeRepository.save(employeeEntity);
+		employee = ObjectMapperUtils.map(employeeEntity, Employee.class);
 		return employee;
 	}
 	
@@ -39,20 +40,29 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 	@Override
 	public void delete(String employeeId) {
-		// TODO Auto-generated method stub
-		
+		UUID id = UUID.fromString(employeeId);
+		if (!employeeRepository.existsById(id)) throw new NoSuchElementException();
+		employeeRepository.deleteById(id);		
 	}
 
 	@Override
 	public Employee update(Employee employee) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (!employeeRepository.existsById(employee.getId())) throw new NoSuchElementException();
+		EmployeeEntity employeeEntity = ObjectMapperUtils.map(employee, EmployeeEntity.class);
+		employeeEntity = employeeRepository.save(employeeEntity);
+		employee = ObjectMapperUtils.map(employeeEntity, Employee.class);
+		return employee;
 	}
 
 	@Override
 	public Employee getByName(String fName, String lName) {
-		// TODO Auto-generated method stub
-		return null;
+		EmployeeEntity employeeEntity = employeeRepository
+				.findByFirstNameLastName(fName, lName)
+				.orElseThrow();
+		
+		Employee employee = ObjectMapperUtils.map(employeeEntity, Employee.class);
+		return employee;
 	}
 
 }
