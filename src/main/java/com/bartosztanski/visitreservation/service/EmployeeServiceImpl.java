@@ -1,5 +1,6 @@
 package com.bartosztanski.visitreservation.service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	
 	@Override
 	public Employee add(Employee employee) {
-		
+		if (employee.getId()!=null) throw new IllegalArgumentException("EMPLOYEE ALREADY HAS ID!");
 		EmployeeEntity employeeEntity = ObjectMapperUtils.map(employee, EmployeeEntity.class);
 		employeeEntity = employeeRepository.save(employeeEntity);
 		employee = ObjectMapperUtils.map(employeeEntity, Employee.class);
@@ -33,7 +34,12 @@ public class EmployeeServiceImpl implements EmployeeService{
 		
 		Employee employee = null;
 		UUID id = UUID.fromString(employeeId);
-		EmployeeEntity employeeEntity = employeeRepository.findById(id).orElseThrow();
+		EmployeeEntity employeeEntity = employeeRepository
+				.findById(id)
+				.orElseThrow(
+					()-> new NoSuchElementException(
+						"NO EMPLOYEE PRESENT WITH ID = "+employeeId));
+		
 		employee = ObjectMapperUtils.map(employeeEntity, Employee.class);
 		return employee;
 	}
@@ -41,14 +47,20 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Override
 	public void delete(String employeeId) {
 		UUID id = UUID.fromString(employeeId);
-		if (!employeeRepository.existsById(id)) throw new NoSuchElementException();
+		if (!employeeRepository.existsById(id))
+			throw new NoSuchElementException(
+					"NO EMPLOYEE PRESENT WITH ID = "+employeeId);
+					
 		employeeRepository.deleteById(id);		
 	}
 
 	@Override
 	public Employee update(Employee employee) {
 		
-		if (!employeeRepository.existsById(employee.getId())) throw new NoSuchElementException();
+		if (!employeeRepository.existsById(employee.getId()))
+			throw new NoSuchElementException(
+					"NO EMPLOYEE PRESENT WITH ID = "+ employee.getId());
+		
 		EmployeeEntity employeeEntity = ObjectMapperUtils.map(employee, EmployeeEntity.class);
 		employeeEntity = employeeRepository.save(employeeEntity);
 		employee = ObjectMapperUtils.map(employeeEntity, Employee.class);
@@ -59,10 +71,34 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public Employee getByName(String fName, String lName) {
 		EmployeeEntity employeeEntity = employeeRepository
 				.findByFirstNameLastName(fName, lName)
-				.orElseThrow();
+				.orElseThrow(
+					()-> new NoSuchElementException(
+						"NO EMPLOYEE PRESENT WITH NAME = "+fName+" "+lName));
 		
 		Employee employee = ObjectMapperUtils.map(employeeEntity, Employee.class);
 		return employee;
 	}
+	
+	@Override
+	public List<Employee> getAll() {
+		List<EmployeeEntity> employeeEntities = employeeRepository
+				.findAll();
+		
+		List<Employee> employees = ObjectMapperUtils.mapAll(employeeEntities, Employee.class);
+		return employees;
+	}
+	
+	@Override
+	public EmployeeEntity getEntityById(String employeeId) {
+
+		UUID id = UUID.fromString(employeeId);
+		EmployeeEntity employeeEntity = employeeRepository
+				.findById(id)
+				.orElseThrow(
+					()-> new NoSuchElementException(
+						"NO EMPLOYEE PRESENT WITH ID = "+employeeId));
+		return employeeEntity;
+	}
+	
 
 }

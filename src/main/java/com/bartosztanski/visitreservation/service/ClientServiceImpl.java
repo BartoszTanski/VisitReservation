@@ -24,6 +24,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public Client add(Client client) {
+		if (client.getId()!=null) throw new IllegalArgumentException("CUSTOMER ALREADY HAS ID!");
 		ClientEntity clientEntity = ObjectMapperUtils.map(client, ClientEntity.class);
 	
 		UUID id = clientRepository.save(clientEntity).getId();
@@ -34,7 +35,12 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public Client getById(String clientId) {
 		UUID id = UUID.fromString(clientId);
-		ClientEntity clientEntity = clientRepository.findById(id).orElseThrow();
+		ClientEntity clientEntity = clientRepository
+				.findById(id)
+				.orElseThrow(
+					()-> new NoSuchElementException(
+                        "NO CUSTOMER PRESENT WITH ID = " + clientId));
+		
 		Client client = ObjectMapperUtils.map(clientEntity, Client.class);
 		return client;
 	}
@@ -42,15 +48,20 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public void deleteById(String clientId) {
 		UUID id = UUID.fromString(clientId);
-		if (!clientRepository.existsById(id)) throw new NoSuchElementException();
+		if (!clientRepository.existsById(id)) 
+			throw new NoSuchElementException("NO CUSTOMER PRESENT WITH ID = " + clientId);
+		
 		clientRepository.deleteById(id);
 	}
 
 	@Override
 	public Client update(Client client) throws NoSuchElementException {
+		UUID id = client.getId();
 		ClientEntity clientEntity = clientRepository
-				.findById(client.getId())
-				.orElseThrow();
+				.findById(id)
+				.orElseThrow(
+					()-> new NoSuchElementException(
+		                "NO CUSTOMER PRESENT WITH ID = " + id));
 		
 		clientEntity = ObjectMapperUtils.map(client, ClientEntity.class);
 		clientRepository.save(clientEntity);
@@ -62,7 +73,9 @@ public class ClientServiceImpl implements ClientService {
 	public Client getByName(String fName, String lName) {
 		ClientEntity clientEntity = clientRepository
 				.findByFirstNameLastName(fName, lName)
-				.orElseThrow();
+				.orElseThrow(
+					()-> new NoSuchElementException(
+						"NO CUSTOMER PRESENT WITH NAME = "+fName+" "+lName));
 		
 		Client client = ObjectMapperUtils.map(clientEntity, Client.class);
 		return client;
@@ -72,7 +85,9 @@ public class ClientServiceImpl implements ClientService {
 	public Client getByPhoneNr(Long phoneNumber) {
 		ClientEntity clientEntity = clientRepository
 				.findByPhoneNumber(phoneNumber)
-				.orElseThrow();
+				.orElseThrow(
+					()-> new NoSuchElementException(
+		               "NO CUSTOMER PRESENT WITH PHONE NUMBER = " + phoneNumber));
 		
 		Client client = ObjectMapperUtils.map(clientEntity, Client.class);
 		return client;
@@ -82,10 +97,24 @@ public class ClientServiceImpl implements ClientService {
 	public Client getByEmail(String email) {
 		ClientEntity clientEntity = clientRepository
 				.findByEmailAddress(email)
-				.orElseThrow();
+				.orElseThrow(
+				    ()-> new NoSuchElementException(
+                       "NO CUSTOMER PRESENT WITH EMAIL = " + email));
 		
 		Client client = ObjectMapperUtils.map(clientEntity, Client.class);
 		return client;
+	}
+	
+	@Override
+	public ClientEntity getEntityById(String clientId) {
+		UUID id = UUID.fromString(clientId);
+		ClientEntity clientEntity = clientRepository
+				.findById(id)
+				.orElseThrow(
+					()-> new NoSuchElementException(
+                        "NO CUSTOMER PRESENT WITH ID = " + clientId));
+		
+		return clientEntity;
 	}
 
 }

@@ -3,7 +3,6 @@ package com.bartosztanski.visitreservation.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
@@ -14,7 +13,6 @@ import com.bartosztanski.visitreservation.error.ClientDetailsNotMatchesException
 import com.bartosztanski.visitreservation.error.VisitNotAvailableException;
 import com.bartosztanski.visitreservation.model.VisitBookingRequest;
 import com.bartosztanski.visitreservation.model.Client;
-import com.bartosztanski.visitreservation.model.Employee;
 import com.bartosztanski.visitreservation.model.Visit;
 import com.bartosztanski.visitreservation.repository.VisitRepository;
 import com.bartosztanski.visitreservation.utils.ObjectMapperUtils;
@@ -36,8 +34,8 @@ public class VisitServiceImpl implements VisitService{
 	}
 	
 	@Override
-	public Visit add(Visit visit) {
-		
+	public Visit add(Visit visit) throws IllegalArgumentException {
+		if (visit.getId()!=null) throw new IllegalArgumentException("VISIT ALREADY HAS ID!");
 		VisitEntity visitEntity = ObjectMapperUtils.map(visit, VisitEntity.class);
 		Long id = visitRepository.save(visitEntity).getId();
 		visit.setId(id);
@@ -45,9 +43,14 @@ public class VisitServiceImpl implements VisitService{
 	}
 
 	@Override
-	public Visit getById(Long id) {
+	public Visit getById(Long id) throws NoSuchElementException {
 		
-		VisitEntity visitEntity = visitRepository.findById(id).get();
+		VisitEntity visitEntity = visitRepository
+				.findById(id)
+				.orElseThrow(
+					()-> new NoSuchElementException(
+                      "NO VISIT PRESENT WITH ID = " + id));
+		
 		Visit visit = ObjectMapperUtils.map(visitEntity, Visit.class);
 		return visit;
 	}
@@ -56,7 +59,12 @@ public class VisitServiceImpl implements VisitService{
 	public Visit book(VisitBookingRequest request) 
 			throws VisitNotAvailableException, NoSuchElementException {
 		
-		VisitEntity visitEntity = visitRepository.findById(request.getId()).orElseThrow();
+		VisitEntity visitEntity = visitRepository
+				.findById(request.getId())
+				.orElseThrow(
+					()-> new NoSuchElementException(
+	                    "NO VISIT PRESENT WITH ID = " + request.getId()));
+		
 		Visit visit = null;
 		
 		if (visitEntity.isAvailable()) {
@@ -66,7 +74,8 @@ public class VisitServiceImpl implements VisitService{
 			visitEntity.setAvailable(false);
 			visitEntity.setClient(clientEntity);
 			visit = ObjectMapperUtils.map(visitRepository.save(visitEntity), Visit.class);
-		} else throw new VisitNotAvailableException();
+		} else throw new VisitNotAvailableException(
+				"VISIT WITH ID = " + request.getId()+ " IS UNAVAILABLE");
 		
 		return visit;
 	}
@@ -74,7 +83,12 @@ public class VisitServiceImpl implements VisitService{
 	@Override
 	public void delete(Client client, Long id) throws ClientDetailsNotMatchesException, NoSuchElementException{
 		
-		VisitEntity visitEntity = visitRepository.findById(id).orElseThrow();
+		VisitEntity visitEntity = visitRepository
+				.findById(id)
+				.orElseThrow(
+					()-> new NoSuchElementException(
+	                   "NO VISIT PRESENT WITH ID = " + id));
+		
 		ClientEntity clientEntity = visitEntity.getClient();
 		
 		if(client.getFirstName().equalsIgnoreCase(clientEntity.getFirstName())
@@ -83,12 +97,15 @@ public class VisitServiceImpl implements VisitService{
 				&& client.getPhoneNumber()==clientEntity.getPhoneNumber()) {
 			
 			visitRepository.delete(visitEntity);
-		}	else throw new ClientDetailsNotMatchesException();
+		}	else throw new ClientDetailsNotMatchesException("VISIT DETAILS DO NOT MATCH CUSTOMER");
 	}
 
 	@Override
-	public Visit update(Visit visit) {
-		if (!visitRepository.existsById(visit.getId())) throw new NoSuchElementException();
+	public Visit update(Visit visit) throws NoSuchElementException {
+		if (!visitRepository.existsById(visit.getId()))
+			throw new NoSuchElementException(
+					"NO VISIT PRESENT WITH ID = " + visit.getId());
+		
 		VisitEntity visitEntity = ObjectMapperUtils.map(visit, VisitEntity.class);
 		visitEntity = visitRepository.save(visitEntity);
 		visit = ObjectMapperUtils.map(visitEntity, Visit.class);
@@ -96,27 +113,35 @@ public class VisitServiceImpl implements VisitService{
 	}
 
 	@Override
-	public List<Visit> getByEmployee(String employeeId) throws NoSuchElementException {
+	public List<Visit> getByEmployee(String employeeId) {
 		List<Visit> visits = new ArrayList<>();
-		UUID id = UUID.fromString(employeeId);
-		List<VisitEntity> visitEntities = visitRepository.findAllByEmployeeId(id);
+		EmployeeEntity employeeEntity = employeeService.getEntityById(employeeId);
+		List<VisitEntity> visitEntities = employeeEntity.getVisits();
 		visits = ObjectMapperUtils.mapAll(visitEntities,Visit.class);
 		return visits;
 	}
 
 	@Override
 	public List<Visit> getByClient(String clientId) {
-		UUID id = UUID.fromString(clientId); //TO DO custom exception for UUID.fromString()
 		List<Visit> visits = new ArrayList<>();
-		List<VisitEntity> visitEntities = visitRepository.findAllByClientId(id);
+		ClientEntity clientEntity = clientService.getEntityById(clientId);
+		List<VisitEntity> visitEntities = clientEntity.getVisits();
 		visits = ObjectMapperUtils.mapAll(visitEntities,Visit.class);
 		return visits;
 	}
 
 	@Override
-	public List<Visit> addAll(List<Visit> visit) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Visit> addAll(List<Visit> visits) {
+		
+		List<Visit> _visits = new ArrayList<>();
+		
+		if (visits.stream().map(v -> v.getId()).allMatch(v -> v == null)) {
+			List<VisitEntity> visitEntities = ObjectMapperUtils.mapAll(visits,VisitEntity.class);
+			visitEntities = visitRepository.saveAll(visitEntities);
+			_visits = ObjectMapperUtils.mapAll(visitEntities,Visit.class);
+		} else throw new IllegalArgumentException("AT LEAST ONE OF VISITITS ALREADY HAVE ID");
+		
+		return _visits;
 	}
 
 }
