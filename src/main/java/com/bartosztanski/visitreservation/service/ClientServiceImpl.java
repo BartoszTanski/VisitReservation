@@ -24,6 +24,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public Client add(Client client) {
+		LOGGER.info("Inside ClientServiceimpl.add");
 		if (client.getId()!=null) throw new IllegalArgumentException("CUSTOMER ALREADY HAS ID!");
 		ClientEntity clientEntity = ObjectMapperUtils.map(client, ClientEntity.class);
 	
@@ -34,6 +35,7 @@ public class ClientServiceImpl implements ClientService {
 	
 	@Override
 	public Client getById(String clientId) {
+		LOGGER.info("Inside ClientServiceimpl.getById");
 		UUID id = UUID.fromString(clientId);
 		ClientEntity clientEntity = clientRepository
 				.findById(id)
