@@ -6,7 +6,9 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
+import com.bartosztanski.visitreservation.entity.ClientEntity;
 import com.bartosztanski.visitreservation.entity.EmployeeEntity;
+import com.bartosztanski.visitreservation.model.Client;
 import com.bartosztanski.visitreservation.model.Employee;
 import com.bartosztanski.visitreservation.repository.EmployeeRepository;
 import com.bartosztanski.visitreservation.utils.ObjectMapperUtils;
@@ -45,7 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	public void delete(String employeeId) {
+	public void deleteById(String employeeId) {
 		UUID id = UUID.fromString(employeeId);
 		if (!employeeRepository.existsById(id))
 			throw new NoSuchElementException(
@@ -70,7 +72,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Override
 	public Employee getByName(String fName, String lName) {
 		EmployeeEntity employeeEntity = employeeRepository
-				.findByFirstNameLastName(fName, lName)
+				.findByFirstNameAndLastName(fName, lName)
 				.orElseThrow(
 					()-> new NoSuchElementException(
 						"NO EMPLOYEE PRESENT WITH NAME = "+fName+" "+lName));
@@ -98,6 +100,18 @@ public class EmployeeServiceImpl implements EmployeeService{
 					()-> new NoSuchElementException(
 						"NO EMPLOYEE PRESENT WITH ID = "+employeeId));
 		return employeeEntity;
+	}
+
+	@Override
+	public Employee getByPhoneNr(Long phoneNumber) {
+		EmployeeEntity employeeEntity = employeeRepository
+				.findByPhoneNumber(phoneNumber)
+				.orElseThrow(
+					()-> new NoSuchElementException(
+		               "NO EMPLOYEE PRESENT WITH PHONE NUMBER = " + phoneNumber));
+		
+		Employee employee = ObjectMapperUtils.map(employeeEntity, Employee.class);
+		return employee;
 	}
 	
 

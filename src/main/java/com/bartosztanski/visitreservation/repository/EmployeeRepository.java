@@ -11,6 +11,8 @@ import com.bartosztanski.visitreservation.entity.EmployeeEntity;
 @Repository
 public interface EmployeeRepository extends JpaRepository<EmployeeEntity, UUID> {
 
-	Optional<EmployeeEntity> findByFirstNameLastName(String fName, String lName);
+	Optional<EmployeeEntity> findByFirstNameAndLastName(String firstName, String lastName);
+
+	Optional<EmployeeEntity> findByPhoneNumber(Long phoneNumber);
 
 }

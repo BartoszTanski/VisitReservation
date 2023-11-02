@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.bartosztanski.visitreservation.model.Client;
 import com.bartosztanski.visitreservation.model.Employee;
@@ -26,8 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/employee/")
-public class EmployeeController {
+@RequestMapping("api/v1/employeethyme/")
+public class EmployeeControllerThymeleaf {
 		
 	private final EmployeeService employeeService;
 	
@@ -62,11 +63,14 @@ public class EmployeeController {
 		return new ResponseEntity<>(_employee, HttpStatus.OK); 
 	}
 	@GetMapping("/all")
-	public ResponseEntity<List<Employee>> getAll() {
+	public ModelAndView getAll() {
 		
 		List<Employee> employees= employeeService.getAll();
-		return new ResponseEntity<>(employees, HttpStatus.OK);  
+		ModelAndView mav = new ModelAndView("list-employees");
+		mav.addObject("employees", employees);
+		return mav;  
 	}
+
 	@GetMapping("/search/name")
 	public ResponseEntity<Employee> getByName(
 			@RequestParam("firstName") Optional<String> fName,

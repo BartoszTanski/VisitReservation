@@ -1,5 +1,6 @@
 package com.bartosztanski.visitreservation.service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -74,7 +75,7 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public Client getByName(String fName, String lName) {
 		ClientEntity clientEntity = clientRepository
-				.findByFirstNameLastName(fName, lName)
+				.findByFirstNameAndLastName(fName, lName)
 				.orElseThrow(
 					()-> new NoSuchElementException(
 						"NO CUSTOMER PRESENT WITH NAME = "+fName+" "+lName));
@@ -117,6 +118,14 @@ public class ClientServiceImpl implements ClientService {
                         "NO CUSTOMER PRESENT WITH ID = " + clientId));
 		
 		return clientEntity;
+	}
+
+	@Override
+	public List<Client> getAllClients() {
+
+		List<ClientEntity> clientEntities = clientRepository.findAll();
+		List<Client> clients = ObjectMapperUtils.mapAll(clientEntities, Client.class);
+		return clients;
 	}
 
 }

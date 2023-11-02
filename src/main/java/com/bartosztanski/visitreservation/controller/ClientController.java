@@ -1,5 +1,6 @@
 package com.bartosztanski.visitreservation.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -54,6 +55,21 @@ public class ClientController {
 		Client _client = clientService.update(client);
 		return new ResponseEntity<>(_client,HttpStatus.ACCEPTED);
 	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Client> getClientById(
+			@PathVariable("id") String clientId) {
+		
+		Client _client = clientService.getById(clientId);
+		if(_client == null) throw new EntityNotFoundException();
+		return new ResponseEntity<>(_client, HttpStatus.OK); 
+	}
+	@GetMapping("/all")
+	public ResponseEntity<List<Client>> getallClients() {
+		
+		List<Client> clients = clientService.getAllClients();
+		return new ResponseEntity<>(clients, HttpStatus.OK);  
+	}
 	@GetMapping("/search/name")
 	public ResponseEntity<Client> getClientByName(
 			@RequestParam("firstName") Optional<String> fName,
@@ -64,7 +80,7 @@ public class ClientController {
 		if(lastName==firstName&&firstName==null) throw new EntityNotFoundException();
 		Client _client = clientService.getByName(firstName, lastName);
 		if(_client == null) throw new EntityNotFoundException();
-		return new ResponseEntity<>(_client, HttpStatus.FOUND); 
+		return new ResponseEntity<>(_client, HttpStatus.OK); 
 	}
 	
 	@GetMapping("/search/phone")
@@ -75,6 +91,6 @@ public class ClientController {
 		if (_phoneNumber == null) throw new EntityNotFoundException();
 		Client _client = clientService.getByPhoneNr(_phoneNumber);
 		if (_client == null) throw new EntityNotFoundException();
-		return new ResponseEntity<>(_client,HttpStatus.FOUND);
+		return new ResponseEntity<>(_client,HttpStatus.OK);
 	}
 }

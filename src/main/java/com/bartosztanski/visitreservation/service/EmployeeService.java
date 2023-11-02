@@ -11,10 +11,11 @@ import com.bartosztanski.visitreservation.model.Employee;
 public interface EmployeeService {
 	
 	public Employee add(Employee employee);
-	public void delete(String employeeId);
+	public void deleteById(String employeeId);
 	public Employee update(Employee employee);
 	public Employee getById(String employeeId);
 	public Employee getByName(String fName, String lName);
 	public List<Employee> getAll();
 	public EmployeeEntity getEntityById(String employeeId);
+	public Employee getByPhoneNr(Long _phoneNumber);
 }

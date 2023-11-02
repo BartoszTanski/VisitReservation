@@ -1,5 +1,7 @@
 package com.bartosztanski.visitreservation.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.bartosztanski.visitreservation.entity.ClientEntity;
@@ -16,4 +18,5 @@ public interface ClientService {
 	public Client getByEmail(String email);
 	public Client getById(String clientId);
 	public ClientEntity getEntityById(String clientId);
+	public List<Client> getAllClients();
 }

@@ -2,7 +2,7 @@ spring:
     datasource:
         initialize: true
         password: admin
-        url: jdbc:postgresql://localhost:5432/v_reservation
+        url: jdbc:postgresql://localhost:5432/visitReservation
         username: postgres
     jpa:
         hibernate:
