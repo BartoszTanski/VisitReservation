@@ -1,0 +1,47 @@
+<html xmlns="http://thymeleaf.org">
+	<head>
+		<title>Endpoints</title>
+		 <link 
+		 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+			rel="stylesheet" 
+			integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
+			crossorigin="anonymous">
+		<link 
+			href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-1.13.6/datatables.min.css" 
+			rel="stylesheet">
+		<body>
+
+			<div class="container">
+
+				<h2>List of Endpoints</h2>
+				<hr/>
+				<table class="table table-hover table-striped" id="endpoint-table">
+					<thead class="table-black">
+						<tr>
+							<th scope="col">Path</th>
+							<th scope="col">Method</th>
+							<th scope="col">Requires</th>
+							<th scope="col">Returns</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="endpoint: ${endpoints}">
+							<td th:text="${endpoint.path}"></td>
+							<td th:text="${endpoint.method}"></td>
+							<td th:text="${endpoint.requires}"></td>
+							<td th:text="${endpoint.returns}"></td>		
+							
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+			<script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-1.13.6/datatables.min.js"></script>
+			<script>
+				$(document).ready(function() {
+					$("#endpoint-table").DataTable();
+				})
+			</script>
+		</body>
+	</head>
+</html>

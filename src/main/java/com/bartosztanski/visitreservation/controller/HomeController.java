@@ -1,7 +1,8 @@
 package com.bartosztanski.visitreservation.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,26 +10,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bartosztanski.visitreservation.model.Endpoint;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/")
 public class HomeController {
-	
-	final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
+
 	
 	@GetMapping("/status")
 	public ResponseEntity<String> status() {
 		
-		LOGGER.info("Inside Homecontroller.status");
 		String s = "Status: UP";
+		log.info("Returned server status");
 		return new ResponseEntity<>(s, HttpStatus.OK);
 	}
 	
 	@GetMapping("/home")
 	public ModelAndView home() {
-		
-		LOGGER.info("Inside HomeController.home");
-	    ModelAndView modelAndView = new ModelAndView();
-	    modelAndView.setViewName("test.html");
-	    return modelAndView;
+	    ModelAndView mav = new ModelAndView("home.html");
+	    List<Endpoint> endpoints = getEndpoints();
+	    mav.addObject("endpoints",endpoints);
+	    return mav;
+	}
+	
+	
+	private static List<Endpoint> getEndpoints() {
+		List<Endpoint> endpoints = new ArrayList<>();
+		endpoints.add(new Endpoint("/employees/","GET","-","List of all employees"));
+		return endpoints;
 	}
 }

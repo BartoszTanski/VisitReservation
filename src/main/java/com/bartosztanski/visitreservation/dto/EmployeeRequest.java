@@ -1,6 +1,5 @@
-package com.bartosztanski.visitreservation.model;
+package com.bartosztanski.visitreservation.dto;
 
-import java.util.List;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -9,17 +8,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Builder
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Client {
+public class EmployeeRequest {
 	
 	private UUID id;
-	private List<Visit> visits;
 	private String firstName;
 	private String lastName;
 	private Long phoneNumber;
 	private String emailAddress;
+
 }

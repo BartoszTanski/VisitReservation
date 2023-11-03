@@ -9,20 +9,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Employee extends Person {
+public class Employee {
 	
 	private UUID id;
 	private List<Visit> visits;
-	
-	@Builder
-    public Employee(UUID id, String firstName, String lastName, Long phoneNumber, String emailAddress, List<Visit> visits) {
-		
-        super(firstName, lastName, phoneNumber, emailAddress);
-        this.id = id;
-        this.visits = visits;
-    }
+	private String firstName;
+	private String lastName;
+	private Long phoneNumber;
+	private String emailAddress;
+
 }
