@@ -1,6 +1,7 @@
 # Visit Reservation Application (In progress)
 
 ### It is a spring boot app that provides REST API. Application is connected to Postgres database.
+#### Stack: Spring boot, PostgreSql, Spring MVC, Thymeleaf 
 
 ## Functionalities:
 - Booking and deleting operations on visits as Client
