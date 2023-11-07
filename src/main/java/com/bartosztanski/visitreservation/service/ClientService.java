@@ -18,5 +18,5 @@ public interface ClientService {
 	public Client getByEmail(String email);
 	public Client getById(String clientId);
 	public ClientEntity getEntityById(String clientId);
-	public List<Client> getAllClients();
+	public List<Client> getAll();
 }

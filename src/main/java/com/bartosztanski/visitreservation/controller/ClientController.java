@@ -67,7 +67,7 @@ public class ClientController {
 	@GetMapping("/all")
 	public ResponseEntity<List<Client>> getallClients() {
 		
-		List<Client> clients = clientService.getAllClients();
+		List<Client> clients = clientService.getAll();
 		return new ResponseEntity<>(clients, HttpStatus.OK);  
 	}
 	@GetMapping("/search/name")

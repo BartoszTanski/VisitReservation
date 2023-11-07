@@ -1,37 +1,34 @@
 package com.bartosztanski.visitreservation.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Component;
 
+import com.bartosztanski.visitreservation.dto.VisitBookingRequest;
 import com.bartosztanski.visitreservation.entity.ClientEntity;
 import com.bartosztanski.visitreservation.entity.EmployeeEntity;
 import com.bartosztanski.visitreservation.entity.VisitEntity;
 import com.bartosztanski.visitreservation.error.ClientDetailsNotMatchesException;
 import com.bartosztanski.visitreservation.error.VisitNotAvailableException;
-import com.bartosztanski.visitreservation.model.VisitBookingRequest;
 import com.bartosztanski.visitreservation.model.Client;
 import com.bartosztanski.visitreservation.model.Visit;
 import com.bartosztanski.visitreservation.repository.VisitRepository;
 import com.bartosztanski.visitreservation.utils.ObjectMapperUtils;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class VisitServiceImpl implements VisitService{
 	
 	private final VisitRepository visitRepository;
 	private final ClientService clientService;
 	private final EmployeeService employeeService;
-	
-	public VisitServiceImpl(VisitRepository visitRepository,
-				ClientService clientService,
-				EmployeeService employeeService) {
-		
-		this.visitRepository = visitRepository;
-		this.clientService = clientService;
-		this.employeeService = employeeService;
-	}
+	private final DateService dateService;
 	
 	@Override
 	public Visit add(Visit visit) throws IllegalArgumentException {
@@ -142,6 +139,43 @@ public class VisitServiceImpl implements VisitService{
 		} else throw new IllegalArgumentException("AT LEAST ONE OF VISITITS ALREADY HAVE ID");
 		
 		return _visits;
+	}
+
+	@Override
+	public void unBook(VisitBookingRequest request) {
+		
+		VisitEntity visitEntity = visitRepository
+				.findById(request.getId())
+				.orElseThrow(
+					()-> new NoSuchElementException(
+	                    "NO VISIT PRESENT WITH ID = " + request.getId()));
+		
+		visitEntity.setAvailable(true);
+		visitEntity.setClient(null);
+		visitRepository.save(visitEntity);
+	}
+
+	@Override
+	public List<Visit> getAll() {
+		List<VisitEntity> visitEntities = visitRepository.findAll();
+		List<Visit> visits = ObjectMapperUtils.mapAll(visitEntities, Visit.class);
+		return visits;
+	}
+	@Override
+	public List<Visit> getAllAvailable() {
+		List<VisitEntity> visitEntities = visitRepository.findAllByAvailable(true);
+		List<Visit> visits = ObjectMapperUtils.mapAll(visitEntities, Visit.class);
+		return visits;
+	}
+
+	@Override
+	public List<Visit> getAllAvailableByWeek(Date day) {
+		
+		Date thisWeekMonday = dateService.getCurrentWeekMonday(day);
+		Date nextWeekMonday = dateService.getNextWeekMonday(day);
+		List<VisitEntity> visitEntities = visitRepository.findAll(thisWeekMonday, nextWeekMonday);
+		List<Visit> visits = ObjectMapperUtils.mapAll(visitEntities, Visit.class);
+		return visits;
 	}
 
 }

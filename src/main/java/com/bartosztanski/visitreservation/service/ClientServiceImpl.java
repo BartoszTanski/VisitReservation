@@ -121,7 +121,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public List<Client> getAllClients() {
+	public List<Client> getAll() {
 
 		List<ClientEntity> clientEntities = clientRepository.findAll();
 		List<Client> clients = ObjectMapperUtils.mapAll(clientEntities, Client.class);

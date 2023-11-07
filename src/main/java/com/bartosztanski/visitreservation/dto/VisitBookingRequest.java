@@ -1,21 +1,21 @@
 package com.bartosztanski.visitreservation.dto;
 
+import com.bartosztanski.visitreservation.model.Client;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Builder
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
-public class EmployeeRequest {
+@AllArgsConstructor
+public class VisitBookingRequest {
 	
-	private String firstName;
-	private String lastName;
-	private Long phoneNumber;
-	private String emailAddress;
-
+	private Long id;
+	private Client client;
+	
 }

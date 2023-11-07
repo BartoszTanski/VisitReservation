@@ -3,6 +3,7 @@ package com.bartosztanski.visitreservation.entity;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,7 +36,7 @@ public class VisitEntity {
 	@JoinColumn(name="client_id")
 	private ClientEntity client;
 	private int duration;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="employee_id")
 	private EmployeeEntity employee;
 	private boolean available;

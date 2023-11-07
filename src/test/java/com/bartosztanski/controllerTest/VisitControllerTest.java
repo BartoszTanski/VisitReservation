@@ -26,12 +26,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import com.bartosztanski.visitreservation.controller.VisitController;
+import com.bartosztanski.visitreservation.dto.VisitBookingRequest;
 import com.bartosztanski.visitreservation.error.RestResponseEntityExceptionHandler;
 import com.bartosztanski.visitreservation.model.Client;
 import com.bartosztanski.visitreservation.model.Employee;
 import com.bartosztanski.visitreservation.model.ErrorMessage;
 import com.bartosztanski.visitreservation.model.Visit;
-import com.bartosztanski.visitreservation.model.VisitBookingRequest;
 import com.bartosztanski.visitreservation.service.VisitService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

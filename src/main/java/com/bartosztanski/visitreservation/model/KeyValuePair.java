@@ -9,11 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class VisitBookingRequest {
-	
-	private Long id;
-	private Client client;
-	
+@NoArgsConstructor
+public class KeyValuePair {
+	private String key;
+	private Object value; 
 }
