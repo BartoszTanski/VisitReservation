@@ -20,6 +20,8 @@ public class Visit {
 	private Client client;
 	private int duration;
 	private Employee employee;
+	private VisitType type;
+	private MedicalField field;
 	private boolean available;
 	
 }

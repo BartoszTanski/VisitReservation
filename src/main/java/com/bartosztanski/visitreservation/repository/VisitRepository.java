@@ -15,8 +15,8 @@ public interface VisitRepository extends JpaRepository<VisitEntity, Long>{
 
 	List<VisitEntity> findAllByEmployeeId(UUID id);
 	List<VisitEntity> findAllByClientId(UUID id);
-	@Query(value="SELECT v FROM visits v WHERE startTime BETWEEN ?1 AND ?2 ORDER BY startTime")
-	List<VisitEntity> findAll(Date thisWeek, Date nextWeek);
+//	@Query(value="SELECT * FROM visits v WHERE v.startTime BETWEEN ?1 AND ?2 ORDER BY v.startTime")
+//	List<VisitEntity> find(Date thisWeek, Date nextWeek);
 	List<VisitEntity> findAllByAvailable(boolean b);
 	
 	

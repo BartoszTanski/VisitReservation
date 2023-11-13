@@ -31,7 +31,9 @@ import com.bartosztanski.visitreservation.error.RestResponseEntityExceptionHandl
 import com.bartosztanski.visitreservation.model.Client;
 import com.bartosztanski.visitreservation.model.Employee;
 import com.bartosztanski.visitreservation.model.ErrorMessage;
+import com.bartosztanski.visitreservation.model.MedicalField;
 import com.bartosztanski.visitreservation.model.Visit;
+import com.bartosztanski.visitreservation.model.VisitType;
 import com.bartosztanski.visitreservation.service.VisitService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -67,7 +69,8 @@ public class VisitControllerTest {
         // given
 		Date date = new Date();
         when(visitService.getById(Long.valueOf(123)))
-                .thenReturn(new Visit(Long.valueOf(123),date,new Client(),15,new Employee(),true));
+                .thenReturn(new Visit(Long.valueOf(123),date,new Client(),15,new Employee(),
+                		VisitType.CONSULTATION,MedicalField.DENTIST,true));
 
         // when
         MockHttpServletResponse response = this.mockMvc
@@ -88,6 +91,8 @@ public class VisitControllerTest {
         								new Client(),
         								15,
         								new Employee(),
+        								VisitType.CONSULTATION,
+        								MedicalField.DENTIST,
         								true))
         					.getJson());
         
@@ -135,7 +140,8 @@ public class VisitControllerTest {
 				.build();
 		
 		Long visitId = Long.valueOf(123);
-		Visit visit = new Visit(visitId,new Date(),client,15,new Employee(),false);
+		Visit visit = new Visit(visitId,new Date(),client,15,new Employee(),
+				VisitType.CONSULTATION,MedicalField.DENTIST,false);
 		
 		VisitBookingRequest bookRequest = new VisitBookingRequest(visitId, client);
 		when(visitService.book(any(VisitBookingRequest.class))).thenReturn(visit);
@@ -171,7 +177,8 @@ public class VisitControllerTest {
 				.build();
 		
 		Long visitId = Long.valueOf(124);
-		Visit visit = new Visit(visitId,new Date(),client,15,new Employee(),false);
+		Visit visit = new Visit(visitId,new Date(),client,15,new Employee(),
+				VisitType.CONSULTATION,MedicalField.DENTIST,false);
 		
 		VisitBookingRequest bookRequest = new VisitBookingRequest(visitId, client);
 		when(visitService.book(any(VisitBookingRequest.class))).thenThrow(new NoSuchElementException());

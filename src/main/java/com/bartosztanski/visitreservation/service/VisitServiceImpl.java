@@ -168,14 +168,14 @@ public class VisitServiceImpl implements VisitService{
 		return visits;
 	}
 
-	@Override
-	public List<Visit> getAllAvailableByWeek(Date day) {
-		
-		Date thisWeekMonday = dateService.getCurrentWeekMonday(day);
-		Date nextWeekMonday = dateService.getNextWeekMonday(day);
-		List<VisitEntity> visitEntities = visitRepository.findAll(thisWeekMonday, nextWeekMonday);
-		List<Visit> visits = ObjectMapperUtils.mapAll(visitEntities, Visit.class);
-		return visits;
-	}
+//	@Override
+//	public List<Visit> getAllAvailableByWeek(Date day) {
+//		
+//		Date thisWeekMonday = dateService.getCurrentWeekMonday(day);
+//		Date nextWeekMonday = dateService.getNextWeekMonday(day);
+//		List<VisitEntity> visitEntities = visitRepository.find(thisWeekMonday, nextWeekMonday);
+//		List<Visit> visits = ObjectMapperUtils.mapAll(visitEntities, Visit.class);
+//		return visits;
+//	}
 
 }

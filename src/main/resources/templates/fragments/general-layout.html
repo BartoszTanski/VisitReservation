@@ -8,7 +8,32 @@
 			crossorigin="anonymous">
 	</head>
 	<body>
-		<div th:replace="fragments/general-layout :: nav"></div>
+		<!-- Navigation -->
+		<nav th:fragment="nav" class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+			<div class="container">
+				<a class="navbar-brand" href="/">Medical Center Ms</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+						aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarResponsive">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item active">
+							<a class="nav-link" th:href="@{/}">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/employees/}">Employees</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/clients/}">Clients</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/visits/}">Visits</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
 		<div class="container mt-5">
 			<h2>Add new employee</h2>
 			<hr/>

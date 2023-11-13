@@ -37,6 +37,6 @@ public interface VisitService {
 
 	List<Visit> getAllAvailable();
 
-	List<Visit> getAllAvailableByWeek(Date thisweek);
+	//List<Visit> getAllAvailableByWeek(Date thisweek);
 
 }

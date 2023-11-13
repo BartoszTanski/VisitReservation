@@ -2,6 +2,9 @@ package com.bartosztanski.visitreservation.entity;
 
 import java.util.Date;
 
+import com.bartosztanski.visitreservation.model.MedicalField;
+import com.bartosztanski.visitreservation.model.VisitType;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +42,8 @@ public class VisitEntity {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="employee_id")
 	private EmployeeEntity employee;
+	private VisitType type;
+	private MedicalField field;
 	private boolean available;
 	
 }
