@@ -23,6 +23,8 @@ public interface VisitService {
 	
 	void delete(Client client, Long id) throws ClientDetailsNotMatchesException, NoSuchElementException;
 	
+	void delete(Long id);
+	
 	Visit update(Visit visit);
 	
 	List<Visit> getByEmployee(String employeeId);

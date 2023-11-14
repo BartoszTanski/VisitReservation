@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bartosztanski.visitreservation.dto.ClientRequest;
+import com.bartosztanski.visitreservation.dto.VisitBookingRequest;
 import com.bartosztanski.visitreservation.model.Client;
 import com.bartosztanski.visitreservation.model.KeyValuePair;
+import com.bartosztanski.visitreservation.model.Visit;
 import com.bartosztanski.visitreservation.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +38,10 @@ public class ClientControllerThymeleaf {
 		keyValuePairs.add(new KeyValuePair("Last Name",client.getLastName()));
 		keyValuePairs.add(new KeyValuePair("Email",client.getEmailAddress()));
 		keyValuePairs.add(new KeyValuePair("Phone number",client.getPhoneNumber()));
-		keyValuePairs.add(new KeyValuePair("Visits",client.getVisits()));
+		List<Visit> visits = client.getVisits();
 		mav.addObject("keyValuePairs", keyValuePairs);
-		mav.addObject("clientId", clientId);
+		mav.addObject("visits", visits);
+		mav.addObject("clientId", client.getId());
 		return mav;  
 	}
 	
@@ -92,4 +95,5 @@ public class ClientControllerThymeleaf {
 		clientService.deleteById(clientId); 
 		return "redirect:/client/all";
 	}
+	
 }

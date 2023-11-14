@@ -16,3 +16,7 @@ spring:
         init:
             mode: always
             continue-on-error: true
+    mvc:
+        hiddenmethod:
+            filter:
+                enabled: true

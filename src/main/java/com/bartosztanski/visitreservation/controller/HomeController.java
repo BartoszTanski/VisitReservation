@@ -28,9 +28,9 @@ public class HomeController {
 		return new ResponseEntity<>(s, HttpStatus.OK);
 	}
 	
-	@GetMapping("/home")
+	@GetMapping({"/home","/"})
 	public ModelAndView home() {
-	    ModelAndView mav = new ModelAndView("home.html");
+	    ModelAndView mav = new ModelAndView("home");
 	    List<Endpoint> endpoints = getEndpoints();
 	    mav.addObject("endpoints",endpoints);
 	    return mav;

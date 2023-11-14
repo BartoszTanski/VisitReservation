@@ -168,6 +168,12 @@ public class VisitServiceImpl implements VisitService{
 		return visits;
 	}
 
+	@Override
+	public void delete(Long id) {
+		visitRepository.deleteById(id);
+	
+	}
+
 //	@Override
 //	public List<Visit> getAllAvailableByWeek(Date day) {
 //		

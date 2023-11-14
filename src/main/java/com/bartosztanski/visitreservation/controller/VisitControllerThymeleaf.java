@@ -52,7 +52,7 @@ public class VisitControllerThymeleaf {
 	@GetMapping("/visit")
 	public ModelAndView getVisitById(@RequestParam("visitId") Long id) {
 		
-		ModelAndView mav = new ModelAndView("single-visit-details");
+		ModelAndView mav = new ModelAndView("single-visit-view");
 		Visit visit = visitService.getById(id);
 		visit.getEmployee().setVisits(null);
 		mav.addObject("visit", visit);
@@ -108,7 +108,7 @@ public class VisitControllerThymeleaf {
 	
 	@PostMapping("/book") 
 	public String book(@ModelAttribute VisitBookingRequest request) 
-			throws NoSuchElementException, VisitNotAvailableException {		
+			throws NoSuchElementException, VisitNotAvailableException {	
 		Long visitId = visitService.book(request).getId();
 		log.info("New visit booked: "+visitId);
 		return "redirect:all";  
@@ -121,44 +121,21 @@ public class VisitControllerThymeleaf {
 		VisitBookingRequest visitBookingRequest = new VisitBookingRequest(visitId, client);
 		mav.addObject("visitBookingRequest", visitBookingRequest);
 		return mav;  
-	}
-	
+	} 
+	 
 	@PostMapping("/unBook") 
 	public String unBook(@ModelAttribute VisitBookingRequest request) 
 			throws NoSuchElementException, VisitNotAvailableException {	
-		
+	
 		visitService.unBook(request);
-		log.info("New visit unBooked: "+request.getId());
+		log.info("Visit unBooked: "+request.getId());
 		return "redirect:all";  
 	}
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Void> deleteVisit(@RequestBody Client client, Long visitId)
-			throws NoSuchElementException, ClientDetailsNotMatchesException {
+	public String deleteVisit(@RequestParam("visitId") Long visitId) {
 		
-		visitService.delete(client, visitId); 
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		visitService.delete(visitId); 
+		return "redirect:all";
 	}
-	
-//	@GetMapping({"/week"})
-//	public ModelAndView getByWeek(@RequestParam Date week) {
-//		List<Visit> visits = visitService.getAllAvailableByWeek(week);
-//		
-//		Map<Date, Integer> map = new HashMap<>();
-//		for (Visit visit : visits) {
-//			map.merge(visit.getStartTime(), 1, Integer::sum);
-//		}
-//		List<VisitsTableRow> visitsTableRows = new ArrayList<>();
-//		for(Entry<Date, Integer> entry : map.entrySet()) {
-//			VisitsTableCell cell = new VisitsTableCell(entry.getKey(),entry.getValue());
-//		}
-//		Date prevWeek = dateService.getPrevWeekMonday(week);
-//		Date nextWeek = dateService.getNextWeekMonday(week);
-//
-//		ModelAndView mav = new ModelAndView("list-visits-booking-week");
-//		mav.addObject("visitsTableRows", visitsTableRows);
-//		mav.addObject("prevWeek", prevWeek);
-//		mav.addObject("nextWeek", nextWeek);
-//		return mav;  
-//	}
-	
+
 }
