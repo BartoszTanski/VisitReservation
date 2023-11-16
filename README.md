@@ -19,7 +19,7 @@
 ### Home - mobile
 ![Homepage](screenshots/homepage-mobile.PNG)
 
-### Home - mobile
+### Home - gif
 ![Homepage](screenshots/homepage.gif)
 
 ## How To Run*
