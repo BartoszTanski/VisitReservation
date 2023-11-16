@@ -19,6 +19,9 @@
 ### Home - mobile
 ![Homepage](screenshots/homepage-mobile.PNG)
 
+### Home - mobile
+![Homepage](screenshots/homepage.gif)
+
 ## How To Run*
 *Requires PostgresSQL Server
 1. Download and unzip the source repository for this guide, or clone it using Git: 
