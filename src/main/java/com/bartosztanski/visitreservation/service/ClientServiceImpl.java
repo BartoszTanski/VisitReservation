@@ -12,23 +12,25 @@ import com.bartosztanski.visitreservation.entity.ClientEntity;
 import com.bartosztanski.visitreservation.model.Client;
 import com.bartosztanski.visitreservation.repository.ClientRepository;
 import com.bartosztanski.visitreservation.utils.ObjectMapperUtils;
+import com.bartosztanski.visitreservation.utils.RandomPasswordGenerator;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
 	
 	private final Logger LOGGER = LoggerFactory.getLogger(ClientServiceImpl.class);
 	private final ClientRepository clientRepository;
-	
-	public ClientServiceImpl(ClientRepository clientRepository) {
-		this.clientRepository = clientRepository;
-	}
+	private final RandomPasswordGenerator generator;
+
 
 	@Override
 	public Client add(Client client) {
 		LOGGER.info("Inside ClientServiceimpl.add");
 		if (client.getId()!=null) throw new IllegalArgumentException("CUSTOMER ALREADY HAS ID!");
 		ClientEntity clientEntity = ObjectMapperUtils.map(client, ClientEntity.class);
-	
+		clientEntity.setPassword(generator.generate());
 		UUID id = clientRepository.save(clientEntity).getId();
 		client.setId(id);
 		return client;

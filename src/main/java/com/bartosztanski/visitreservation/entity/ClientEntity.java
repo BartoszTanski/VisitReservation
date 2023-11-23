@@ -1,7 +1,12 @@
 package com.bartosztanski.visitreservation.entity;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import com.bartosztanski.visitreservation.model.CustomUserDetails;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -37,5 +42,19 @@ public class ClientEntity {
 	private Long phoneNumber;
 	@Column(name="email_address")
 	private String emailAddress;
+	private String password;
 
+	
+	public CustomUserDetails toUserDetails() {
+		
+		if (this.emailAddress == null) return null;
+		
+		return new CustomUserDetails.Builder().withFirstName(this.firstName)
+        .withLastName(this.lastName)
+        .withEmail(this.emailAddress)
+        .withUsername(this.emailAddress)
+        .withPassword(this.password)
+        .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")))
+        .build();
+	}
 }

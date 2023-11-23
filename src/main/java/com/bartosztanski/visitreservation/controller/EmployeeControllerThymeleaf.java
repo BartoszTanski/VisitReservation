@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bartosztanski.visitreservation.dto.EmployeeRequest;
 import com.bartosztanski.visitreservation.model.Employee;
 import com.bartosztanski.visitreservation.model.KeyValuePair;
+import com.bartosztanski.visitreservation.model.Visit;
 import com.bartosztanski.visitreservation.service.EmployeeService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,9 +38,14 @@ public class EmployeeControllerThymeleaf {
 		keyValuePairs.add(new KeyValuePair("Last Name",employee.getLastName()));
 		keyValuePairs.add(new KeyValuePair("Email",employee.getEmailAddress()));
 		keyValuePairs.add(new KeyValuePair("Phone number",employee.getPhoneNumber()));
-		keyValuePairs.add(new KeyValuePair("Visits",employee.getVisits()));
+		employee.getVisits()
+			.sort((Visit v1, Visit v2) -> v1.getStartTime()
+						.compareTo(v2.getStartTime()));
+		
+		List<Visit> visits = employee.getVisits();				
 		mav.addObject("keyValuePairs", keyValuePairs);
 		mav.addObject("employeeId", employeeId);
+		mav.addObject("visits", visits);
 		return mav;  
 	}
 	

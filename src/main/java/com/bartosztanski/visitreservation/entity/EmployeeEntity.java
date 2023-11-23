@@ -1,7 +1,13 @@
 package com.bartosztanski.visitreservation.entity;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import com.bartosztanski.visitreservation.model.CustomUserDetails;
+import com.bartosztanski.visitreservation.model.Role;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -17,6 +23,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Builder
 @Entity
@@ -25,6 +32,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="employees")
+@Slf4j
 public class EmployeeEntity {
 	
 	@Id
@@ -37,4 +45,26 @@ public class EmployeeEntity {
 	private Long phoneNumber;
 	@Column(name="email_address")
 	private String emailAddress;
+	private String password;
+	private List<Role> roles;
+	
+	public CustomUserDetails toUserDetails() {
+		
+		if (this.emailAddress == null) return null;
+		
+		return new CustomUserDetails.Builder().withFirstName(this.firstName)
+        .withLastName(this.lastName)
+        .withEmail(this.emailAddress)
+        .withUsername(this.emailAddress)
+        .withPassword(this.password)
+        .withAuthorities(Collections.unmodifiableCollection(
+        		roleToAuthority(this.roles)))
+        .build();
+	}
+	
+	private List<SimpleGrantedAuthority> roleToAuthority(List<Role> roles) {
+		if (roles==null)
+			return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+		return roles.stream().map((role) -> role.toSimpleGrantedAuthority()).toList();
+	}
 }

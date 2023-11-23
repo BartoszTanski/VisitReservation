@@ -25,6 +25,17 @@
 							<td th:text="${keyValuePair.key}"></td>
 							<td th:text="${keyValuePair.value}"></td>
 						</tr>
+						<tr>
+							<td>Visits</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td style=" display: grid; grid-template-columns: repeat(8, 1fr);">
+								<div th:each="visit: ${visits}" class="col" style="margin-bottom: 10px;">
+									<a th:text="${#dates.format(visit.startTime, 'dd/MM HH:mm')}"  th:href="@{/visits/visit(visitId=${visit.id})}" class="btn btn-info"></a>
+								</div>
+							</td>
+						</tr>
 					</tbody>
 				</table>
                 <hr/>

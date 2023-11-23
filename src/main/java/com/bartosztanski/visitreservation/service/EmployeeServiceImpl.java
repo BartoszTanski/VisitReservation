@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.bartosztanski.visitreservation.entity.ClientEntity;
@@ -12,20 +13,22 @@ import com.bartosztanski.visitreservation.model.Client;
 import com.bartosztanski.visitreservation.model.Employee;
 import com.bartosztanski.visitreservation.repository.EmployeeRepository;
 import com.bartosztanski.visitreservation.utils.ObjectMapperUtils;
+import com.bartosztanski.visitreservation.utils.RandomPasswordGenerator;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService{
 
 	private final EmployeeRepository employeeRepository;
-	
-	public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
-		this.employeeRepository = employeeRepository;
-	}
+	private final RandomPasswordGenerator generator;
 	
 	@Override
 	public Employee add(Employee employee) {
 		if (employee.getId()!=null) throw new IllegalArgumentException("EMPLOYEE ALREADY HAS ID!");
 		EmployeeEntity employeeEntity = ObjectMapperUtils.map(employee, EmployeeEntity.class);
+		employeeEntity.setPassword(generator.generate());
 		employeeEntity = employeeRepository.save(employeeEntity);
 		employee = ObjectMapperUtils.map(employeeEntity, Employee.class);
 		return employee;

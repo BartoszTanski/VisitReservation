@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.bartosztanski.visitreservation.entity.ClientEntity;
+import com.bartosztanski.visitreservation.model.CustomUserDetails;
 
 @Repository
 public interface ClientRepository extends JpaRepository<ClientEntity, UUID>{
@@ -16,5 +17,7 @@ public interface ClientRepository extends JpaRepository<ClientEntity, UUID>{
 	Optional<ClientEntity> findByPhoneNumber(Long phoneNumber);
 
 	Optional<ClientEntity> findByEmailAddress(String email);
+
+	Optional<ClientEntity> getByEmailAddressIgnoreCase(String username);
 
 }
