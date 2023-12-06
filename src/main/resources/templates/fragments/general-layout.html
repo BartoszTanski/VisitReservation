@@ -26,9 +26,15 @@
 							<a class="nav-link" th:href="@{/visits/}">Visits</a>
 						</li>
 					</ul>
-					<ul class="navbar-nav ml-auto">
-						<li class="nav-item">
+					<ul class="navbar-nav ml-auto" th:if="${authentication!=null}">
+						<li class="nav-item" th:if="${authentication.principal!='anonymousUser'}">
 							<a class="nav-link" th:href="@{/logout}">Logout</a>
+						</li>
+						<li class="nav-item" th:if="${authentication.principal=='anonymousUser'}">
+							<a class="nav-link" th:href="@{/login}">Login</a>
+						</li>
+						<li class="nav-item" th:if="${authentication.principal=='anonymousUser'}">
+							<p th:text="${session}"></p>
 						</li>
 					</ul>
 				</div>

@@ -2,15 +2,21 @@ package com.bartosztanski.visitreservation.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Component;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-
+@Getter
+@Setter
 public class CustomUserDetails extends User {
 
-    private final String firstName;
+	private static final long serialVersionUID = -3239081890698155157L;
+	private final String firstName;
     private final String lastName;
     private final String email;
 

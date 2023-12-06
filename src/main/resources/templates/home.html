@@ -15,6 +15,24 @@
 			<img th:src="@{images/clinic.jpg}" style="max-width: 100%; height: auto; opacity: 0.35; position: absolute; z-index: -1;"/>
 			<div class="container my-5" style="opacity: 1;">
 				<h2 class="flex ">Next level of health care</h2>
+				<p th:text="${#ctx.session.size()}"></p>
+				<div th:if="${authentication.principal!='anonymousUser'}">
+					<div sec:authorize="hasRole('USER')">Text visible to user.</div>
+					<p>Works</p>
+					<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
+					<div sec:authorize="isAuthenticated()">Text visible only to authenticated users.</div>
+					Authenticated username:
+					<div sec:authentication="name"></div>
+					Authenticated user's firstName:
+					<div sec:authentication="principal.firstName"></div>
+					Authenticated user's lastName:
+					<div sec:authentication="principal.firstName"></div>
+					Authenticated user's email:
+					<div sec:authentication="principal.lastName"></div>
+					Authenticated user roles:
+					<div sec:authentication="principal.authorities"></div>
+				</div>
+				<p th:if="${authentication==null}">Is null</p>
 				<hr/>
 				<div class="rounded bg-dark pt-2 pb-1 mb-2 ">
 					<h3 class="mx-auto flex text-center text-light align-middle fw-bolder" style="width: 200px;">Our Services</h3>

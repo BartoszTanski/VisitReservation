@@ -2,6 +2,9 @@ package com.bartosztanski.visitreservation.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,6 +32,7 @@ public class ClientControllerThymeleaf {
 		
 	@GetMapping("/client")
 	public ModelAndView singleClientForm(@RequestParam("clientId") String clientId) {	
+	
 		log.info("showing client: "+clientId);
 		ModelAndView mav = new ModelAndView("single-client-view");
 		Client client = clientService.getById(clientId);
@@ -42,14 +46,17 @@ public class ClientControllerThymeleaf {
 		mav.addObject("keyValuePairs", keyValuePairs);
 		mav.addObject("visits", visits);
 		mav.addObject("clientId", client.getId());
-		return mav;  
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		mav.addObject("authentication", authentication); 
+		return mav; 
 	}
 	
 	@GetMapping({"/all","/"})
 	public ModelAndView getAll() {
 		
 		List<Client> clients= clientService.getAll();
-		ModelAndView mav = new ModelAndView("list-clients");
+		ModelAndView mav = new ModelAndView("list-clients"); 
 		mav.addObject("clients", clients);
 		return mav;  
 	}

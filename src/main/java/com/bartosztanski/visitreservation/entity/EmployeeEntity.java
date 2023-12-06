@@ -51,7 +51,7 @@ public class EmployeeEntity {
 	public CustomUserDetails toUserDetails() {
 		
 		if (this.emailAddress == null) return null;
-		
+		log.info(this.firstName+this.lastName+this.emailAddress);
 		return new CustomUserDetails.Builder().withFirstName(this.firstName)
         .withLastName(this.lastName)
         .withEmail(this.emailAddress)
@@ -66,5 +66,9 @@ public class EmployeeEntity {
 		if (roles==null)
 			return List.of(new SimpleGrantedAuthority("ROLE_USER"));
 		return roles.stream().map((role) -> role.toSimpleGrantedAuthority()).toList();
+	}
+	
+	public String toString() {
+		return "id: "+id+" firstname:"+ firstName+" lastname: "+lastName+" email: "+emailAddress;
 	}
 }
